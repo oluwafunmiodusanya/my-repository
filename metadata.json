@@ -1,0 +1,6 @@
+{
+  "name": "Creator Funmi Portfolio",
+  "description": "Modern, premium one-page portfolio for lifestyle & comedy content creator Creator Funmi, optimized for brand partnerships.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
