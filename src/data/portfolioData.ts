@@ -24,7 +24,7 @@ export const INITIAL_VIDEOS: VideoItem[] = [
     title: "A Day in My Life: Morning Routine & Lagos Vibes",
     description: "Authentic everyday moments, morning skincare, and Lagos urban lifestyle routine.",
     videoUrl: "https://www.instagram.com/reel/DSk--bmDYeq/?igsh=MW95dW0wNDdra3ljcw==",
-    thumbnailUrl: "/src/assets/images/regenerated_image_1786106702178.jpg",
+    thumbnailUrl: "/images/regenerated_image_1786106702178.jpg",
     views: "1.2M",
     likes: "37K",
     comments: "8",
