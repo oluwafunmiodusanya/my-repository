@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Eye, Globe, ChevronLeft, ChevronRight } from 'lucide-react';
 import { AnalyticsMetric, AnalyticsScreenshot } from '../types';
+import { analyticsImageProps } from '../utils/responsiveImage';
 
 interface AnalyticsSectionProps {
   metrics: AnalyticsMetric[];
@@ -145,12 +146,13 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
                     {/* Image Box */}
                     <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] bg-slate-100 overflow-hidden flex items-center justify-center">
                       <img
-                        src={scr.imageUrl || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=70'}
+                        {...analyticsImageProps(scr.imageUrl)}
                         alt={scr.title}
                         loading="lazy"
                         decoding="async"
                         referrerPolicy="no-referrer"
-                        className="w-full h-full object-cover sm:object-contain"
+                        onClick={() => onOpenLightbox(scr)}
+                        className="w-full h-full object-contain cursor-zoom-in"
                       />
 
                       {/* Side Overlay Arrow Buttons */}

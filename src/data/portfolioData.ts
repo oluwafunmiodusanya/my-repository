@@ -194,7 +194,7 @@ export const INITIAL_ANALYTICS_SCREENSHOTS: AnalyticsScreenshot[] = [
     key: "views",
     title: "Views Performance",
     description: "Total impressions and video plays across Instagram Reels & TikTok.",
-    imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=70",
+    imageUrl: "/images/analytics_views.jpg",
     dateRange: "Last 30 Days"
   },
   {
@@ -202,7 +202,7 @@ export const INITIAL_ANALYTICS_SCREENSHOTS: AnalyticsScreenshot[] = [
     key: "engagement",
     title: "Engagement Breakdown",
     description: "Likes, comments, shares, and saves metrics demonstrating active community interest.",
-    imageUrl: "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=800&q=70",
+    imageUrl: "/images/analytics_engagement.jpg",
     dateRange: "Last 30 Days"
   },
   {
@@ -210,7 +210,7 @@ export const INITIAL_ANALYTICS_SCREENSHOTS: AnalyticsScreenshot[] = [
     key: "followers",
     title: "Followers Growth",
     description: "Consistent follower accumulation driven by relatable comedy skits.",
-    imageUrl: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=70",
+    imageUrl: "/images/analytics_followers.jpg",
     dateRange: "Last 30 Days"
   },
   {
@@ -218,7 +218,7 @@ export const INITIAL_ANALYTICS_SCREENSHOTS: AnalyticsScreenshot[] = [
     key: "audience",
     title: "Audience Demographics",
     description: "Age breakdown, top countries (Nigeria, UK, US) and gender split.",
-    imageUrl: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=70",
+    imageUrl: "/images/analytics_audience.png",
     dateRange: "Last 30 Days"
   }
 ];

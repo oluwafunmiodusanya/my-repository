@@ -83,13 +83,23 @@ function readStoredScreenshots(): AnalyticsScreenshot[] {
     if (saved && saved.length < 2_000_000) {
       const parsed = JSON.parse(saved);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        return parsed.map((item: AnalyticsScreenshot, index: number) => ({
-          ...item,
-          imageUrl:
-            item.imageUrl ||
-            INITIAL_ANALYTICS_SCREENSHOTS[index]?.imageUrl ||
-            INITIAL_ANALYTICS_SCREENSHOTS[0].imageUrl,
-        }));
+        return INITIAL_ANALYTICS_SCREENSHOTS.map((initial, index) => {
+          const stored = parsed[index] as AnalyticsScreenshot | undefined;
+          const storedUrl = stored?.imageUrl || '';
+          // Keep user uploads (data URLs); replace old Unsplash / empty placeholders
+          const keepStored =
+            storedUrl.startsWith('data:') ||
+            (storedUrl.startsWith('/images/analytics_') && !storedUrl.includes('unsplash'));
+          return {
+            ...initial,
+            ...stored,
+            id: initial.id,
+            key: initial.key,
+            title: initial.title,
+            description: initial.description,
+            imageUrl: keepStored ? storedUrl : initial.imageUrl,
+          };
+        });
       }
     }
   } catch {

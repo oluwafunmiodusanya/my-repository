@@ -28,3 +28,16 @@ export function thumbnailImageProps(url: string) {
     sizes: '(max-width: 640px) 260px, 270px',
   };
 }
+
+export function analyticsImageProps(url: string) {
+  if (!url.startsWith('/images/analytics_')) {
+    return { src: url };
+  }
+
+  const stem = url.replace(/\.(png|jpe?g|webp)$/i, '');
+  return {
+    src: url,
+    srcSet: `${stem}-800.jpg 800w, ${stem}-1200.jpg 1200w, ${url} 1920w`,
+    sizes: '(max-width: 768px) 92vw, 768px',
+  };
+}
