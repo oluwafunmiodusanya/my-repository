@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Sparkles, ArrowRight, Video, Flame, Play, ShieldCheck, Instagram } from 'lucide-react';
 import { CreatorProfile } from '../types';
 import { BRAND_PARTNERS } from '../data/portfolioData';
+import { portraitImageProps } from '../utils/responsiveImage';
 
 interface HeroProps {
   profile: CreatorProfile;
@@ -97,8 +98,12 @@ export const Hero: React.FC<HeroProps> = ({ profile, onNavigate }) => {
             {/* Image Frame */}
             <div className="relative w-full h-full min-h-[420px] rounded-[1.5rem] overflow-hidden bg-purple-50 border border-purple-100">
               <img
-                src={profile.portraitUrl}
+                {...portraitImageProps(profile.portraitUrl)}
                 alt={profile.name}
+                width={1122}
+                height={1402}
+                fetchPriority="high"
+                decoding="async"
                 referrerPolicy="no-referrer"
                 className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
               />

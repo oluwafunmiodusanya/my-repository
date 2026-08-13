@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+/* Skip painting off-screen sections until needed — big mobile/desktop scroll win */
+.content-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}

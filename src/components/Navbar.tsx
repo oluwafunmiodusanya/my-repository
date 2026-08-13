@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, Sparkles, Send, Settings, Check } from 'lucide-react';
+import { Menu, X, Send } from 'lucide-react';
 import { CreatorProfile } from '../types';
 
 interface NavbarProps {
   profile: CreatorProfile;
-  onOpenEditModal: () => void;
   onNavigate: (sectionId: string) => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ profile, onOpenEditModal, onNavigate }) => {
+export const Navbar: React.FC<NavbarProps> = ({ profile, onNavigate }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
@@ -105,14 +104,9 @@ export const Navbar: React.FC<NavbarProps> = ({ profile, onOpenEditModal, onNavi
         {/* Mobile menu button */}
         <div className="flex md:hidden items-center gap-2">
           <button
-            onClick={onOpenEditModal}
-            className="p-2 rounded-lg bg-white border border-purple-100 text-[#8F5BFF]"
-          >
-            <Settings className="w-5 h-5" />
-          </button>
-          <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-2 rounded-lg bg-white border border-purple-100 text-[#2D2442]"
+            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>

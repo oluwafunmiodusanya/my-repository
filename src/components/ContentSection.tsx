@@ -22,7 +22,7 @@ export const ContentSection: React.FC<ContentSectionProps> = ({
   const brandVideos = videos.filter((v) => v.category === 'brand');
 
   return (
-    <section id="content" className="py-20 relative overflow-hidden bg-[#F9F7FF]">
+    <section id="content" className="py-20 relative overflow-hidden bg-[#F9F7FF] content-auto">
       {/* Glow gradient background */}
       <div className="absolute top-1/3 right-0 w-96 h-96 bg-purple-200/30 rounded-full blur-[140px] pointer-events-none" />
 

@@ -36,7 +36,7 @@ export const WhyPartnerSection: React.FC<WhyPartnerProps> = ({ benefits }) => {
   };
 
   return (
-    <section id="partner" className="py-20 relative overflow-hidden bg-[#F9F7FF]">
+    <section id="partner" className="py-20 relative overflow-hidden bg-[#F9F7FF] content-auto">
       {/* Background glowing orb */}
       <div className="absolute top-1/2 right-0 -translate-y-1/2 w-96 h-96 bg-purple-200/30 rounded-full blur-[140px] pointer-events-none" />
 

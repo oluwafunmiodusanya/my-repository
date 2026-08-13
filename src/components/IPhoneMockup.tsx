@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Play, Eye, Heart, Share2, MessageCircle, ExternalLink, Sparkles } from 'lucide-react';
 import { VideoItem } from '../types';
+import { thumbnailImageProps } from '../utils/responsiveImage';
 
 interface IPhoneMockupProps {
   video: VideoItem;
@@ -38,8 +39,12 @@ export const IPhoneMockup: React.FC<IPhoneMockupProps> = ({ video, buttonLabel, 
           {/* Background Image Preview */}
           <div className="absolute inset-0 z-0 bg-slate-900">
             <img
-              src={video.thumbnailUrl}
+              {...thumbnailImageProps(video.thumbnailUrl)}
               alt={video.title}
+              width={1284}
+              height={2270}
+              loading="lazy"
+              decoding="async"
               referrerPolicy="no-referrer"
               className={`w-full h-full object-cover transition-transform duration-500 ${
                 isHovered ? 'scale-110' : 'scale-100'

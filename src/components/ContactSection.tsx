@@ -44,7 +44,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ profile, service
   };
 
   return (
-    <section id="contact" className="py-20 relative overflow-hidden bg-[#F9F7FF]">
+    <section id="contact" className="py-20 relative overflow-hidden bg-[#F9F7FF] content-auto">
       {/* Anchor for Services scrolling */}
       <div id="services" className="absolute top-0" />
 

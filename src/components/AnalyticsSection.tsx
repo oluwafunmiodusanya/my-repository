@@ -25,7 +25,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
   };
 
   return (
-    <section id="analytics" className="py-20 relative overflow-hidden bg-[#F9F7FF]">
+    <section id="analytics" className="py-20 relative overflow-hidden bg-[#F9F7FF] content-auto">
       {/* Background ambient light */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-purple-200/30 rounded-full blur-[150px] pointer-events-none" />
 
@@ -145,8 +145,10 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
                     {/* Image Box */}
                     <div className="relative w-full aspect-[16/10] sm:aspect-[16/9] bg-slate-100 overflow-hidden flex items-center justify-center">
                       <img
-                        src={scr.imageUrl || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80'}
+                        src={scr.imageUrl || 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=70'}
                         alt={scr.title}
+                        loading="lazy"
+                        decoding="async"
                         referrerPolicy="no-referrer"
                         className="w-full h-full object-cover sm:object-contain"
                       />

@@ -1,15 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
-import { AboutSection } from './components/AboutSection';
-import { ContentSection } from './components/ContentSection';
-import { AnalyticsSection } from './components/AnalyticsSection';
-import { WhyPartnerSection } from './components/WhyPartnerSection';
-import { ContactSection } from './components/ContactSection';
-import { Footer } from './components/Footer';
-import { VideoModal } from './components/VideoModal';
-import { AnalyticsLightboxModal } from './components/AnalyticsLightboxModal';
-import { EditPortfolioModal } from './components/EditPortfolioModal';
 
 import {
   INITIAL_PROFILE,
@@ -22,50 +13,102 @@ import {
 
 import { CreatorProfile, VideoItem, AnalyticsScreenshot, ServiceItem } from './types';
 
-export default function App() {
-  const [profile, setProfile] = useState<CreatorProfile>(() => {
-    try {
-      const saved = localStorage.getItem('funmi_creator_profile');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        return {
-          ...INITIAL_PROFILE,
-          ...parsed,
-          aboutPortraitUrl: (!parsed.aboutPortraitUrl || parsed.aboutPortraitUrl === "/src/assets/images/regenerated_image_1786106721139.jpg") ? INITIAL_PROFILE.aboutPortraitUrl : parsed.aboutPortraitUrl,
-        };
+const AboutSection = lazy(() =>
+  import('./components/AboutSection').then((m) => ({ default: m.AboutSection }))
+);
+const ContentSection = lazy(() =>
+  import('./components/ContentSection').then((m) => ({ default: m.ContentSection }))
+);
+const AnalyticsSection = lazy(() =>
+  import('./components/AnalyticsSection').then((m) => ({ default: m.AnalyticsSection }))
+);
+const WhyPartnerSection = lazy(() =>
+  import('./components/WhyPartnerSection').then((m) => ({ default: m.WhyPartnerSection }))
+);
+const ContactSection = lazy(() =>
+  import('./components/ContactSection').then((m) => ({ default: m.ContactSection }))
+);
+const Footer = lazy(() =>
+  import('./components/Footer').then((m) => ({ default: m.Footer }))
+);
+const VideoModal = lazy(() =>
+  import('./components/VideoModal').then((m) => ({ default: m.VideoModal }))
+);
+const AnalyticsLightboxModal = lazy(() =>
+  import('./components/AnalyticsLightboxModal').then((m) => ({ default: m.AnalyticsLightboxModal }))
+);
+const EditPortfolioModal = lazy(() =>
+  import('./components/EditPortfolioModal').then((m) => ({ default: m.EditPortfolioModal }))
+);
+
+function migrateImagePath(url: string | undefined): string | undefined {
+  if (!url) return url;
+  // data URLs / remote URLs — leave untouched
+  if (url.startsWith('data:') || url.startsWith('http://') || url.startsWith('https://')) {
+    return url;
+  }
+  return url
+    .replace('/src/assets/images/', '/images/')
+    .replace(/\.webp$/i, (match, offset, full) => {
+      // Prefer PNG for known portrait filenames, JPG otherwise
+      if (full.includes('1785444358154') || full.includes('1786457541345')) {
+        return '.png';
       }
-    } catch {
-      // ignore
+      return '.jpg';
+    });
+}
+
+function readStoredProfile(): CreatorProfile {
+  try {
+    const saved = localStorage.getItem('funmi_creator_profile');
+    if (saved && saved.length < 500_000) {
+      const parsed = JSON.parse(saved);
+      return {
+        ...INITIAL_PROFILE,
+        ...parsed,
+        portraitUrl: migrateImagePath(parsed.portraitUrl) || INITIAL_PROFILE.portraitUrl,
+        aboutPortraitUrl:
+          migrateImagePath(parsed.aboutPortraitUrl) || INITIAL_PROFILE.aboutPortraitUrl,
+      };
     }
-    return INITIAL_PROFILE;
-  });
+  } catch {
+    // ignore
+  }
+  return INITIAL_PROFILE;
+}
+
+function readStoredScreenshots(): AnalyticsScreenshot[] {
+  try {
+    const saved = localStorage.getItem('funmi_analytics_screenshots');
+    if (saved && saved.length < 2_000_000) {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed.map((item: AnalyticsScreenshot, index: number) => ({
+          ...item,
+          imageUrl:
+            item.imageUrl ||
+            INITIAL_ANALYTICS_SCREENSHOTS[index]?.imageUrl ||
+            INITIAL_ANALYTICS_SCREENSHOTS[0].imageUrl,
+        }));
+      }
+    }
+  } catch {
+    // ignore
+  }
+  return INITIAL_ANALYTICS_SCREENSHOTS;
+}
+
+export default function App() {
+  const [profile, setProfile] = useState<CreatorProfile>(readStoredProfile);
   const [videos, setVideos] = useState<VideoItem[]>(INITIAL_VIDEOS);
   const [metrics] = useState(INITIAL_METRICS);
-  const [screenshots, setScreenshots] = useState<AnalyticsScreenshot[]>(() => {
-    try {
-      const saved = localStorage.getItem('funmi_analytics_screenshots');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          return parsed.map((item: AnalyticsScreenshot, index: number) => ({
-            ...item,
-            imageUrl: item.imageUrl || INITIAL_ANALYTICS_SCREENSHOTS[index]?.imageUrl || INITIAL_ANALYTICS_SCREENSHOTS[0].imageUrl
-          }));
-        }
-      }
-    } catch {
-      // ignore
-    }
-    return INITIAL_ANALYTICS_SCREENSHOTS;
-  });
+  const [screenshots, setScreenshots] = useState<AnalyticsScreenshot[]>(readStoredScreenshots);
   const [benefits] = useState(WHY_PARTNER_BENEFITS);
   const [services] = useState(SERVICES);
 
-  // Modal States
   const [selectedVideo, setSelectedVideo] = useState<VideoItem | null>(null);
   const [selectedScreenshot, setSelectedScreenshot] = useState<AnalyticsScreenshot | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [selectedServiceInquiry, setSelectedServiceInquiry] = useState<string>('Sponsored Content');
 
   const handleNavigate = (sectionId: string) => {
     const el = document.getElementById(sectionId);
@@ -93,8 +136,7 @@ export default function App() {
     setVideos((prev) => prev.map((v) => (v.id === updatedVideo.id ? updatedVideo : v)));
   };
 
-  const handleSelectService = (service: ServiceItem) => {
-    setSelectedServiceInquiry(service.title);
+  const handleSelectService = (_service: ServiceItem) => {
     handleNavigate('contact');
   };
 
@@ -106,87 +148,72 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#F9F7FF] text-[#2D2442] font-['DM_Sans',sans-serif] selection:bg-[#8F5BFF] selection:text-white relative">
-      
-      {/* Sticky Navigation Bar */}
-      <Navbar
-        profile={profile}
-        onOpenEditModal={() => setIsEditModalOpen(true)}
-        onNavigate={handleNavigate}
-      />
+      <Navbar profile={profile} onNavigate={handleNavigate} />
 
-      {/* Hero Section */}
-      <Hero
-        profile={profile}
-        onNavigate={handleNavigate}
-      />
+      <Hero profile={profile} onNavigate={handleNavigate} />
 
-      {/* About Me Section */}
-      <AboutSection
-        profile={profile}
-      />
+      <Suspense fallback={null}>
+        <AboutSection profile={profile} />
 
-      {/* Our Content Section (3 Cards x 3 iPhones each) */}
-      <ContentSection
-        videos={videos}
-        onSelectVideo={handleSelectVideo}
-        onOpenEditModal={() => setIsEditModalOpen(true)}
-      />
+        <ContentSection
+          videos={videos}
+          onSelectVideo={handleSelectVideo}
+          onOpenEditModal={() => setIsEditModalOpen(true)}
+        />
 
-      {/* Analytics Section (Metrics + 5 Upload Placeholders) */}
-      <AnalyticsSection
-        metrics={metrics}
-        screenshots={screenshots}
-        onUpdateScreenshot={handleUpdateScreenshot}
-        onOpenLightbox={(screenshot) => setSelectedScreenshot(screenshot)}
-      />
+        <AnalyticsSection
+          metrics={metrics}
+          screenshots={screenshots}
+          onUpdateScreenshot={handleUpdateScreenshot}
+          onOpenLightbox={(screenshot) => setSelectedScreenshot(screenshot)}
+        />
 
-      {/* Why Partner With Creator Funmi */}
-      <WhyPartnerSection
-        benefits={benefits}
-      />
+        <WhyPartnerSection benefits={benefits} />
 
-      {/* Let's Work Together (Services on Left, Get In Touch on Right) */}
-      <ContactSection
-        profile={profile}
-        services={services}
-        onSelectService={handleSelectService}
-      />
+        <ContactSection
+          profile={profile}
+          services={services}
+          onSelectService={handleSelectService}
+        />
 
-      {/* Footer */}
-      <Footer
-        profile={profile}
-        onNavigate={handleNavigate}
-      />
+        <Footer profile={profile} onNavigate={handleNavigate} />
+      </Suspense>
 
-      {/* Modals & Lightboxes */}
-      <VideoModal
-        video={selectedVideo}
-        onClose={() => setSelectedVideo(null)}
-        onUpdateVideo={handleUpdateVideo}
-      />
+      <Suspense fallback={null}>
+        {selectedVideo && (
+          <VideoModal
+            video={selectedVideo}
+            onClose={() => setSelectedVideo(null)}
+            onUpdateVideo={handleUpdateVideo}
+          />
+        )}
 
-      <AnalyticsLightboxModal
-        screenshot={selectedScreenshot}
-        onClose={() => setSelectedScreenshot(null)}
-        onUpdateScreenshot={handleUpdateScreenshot}
-      />
+        {selectedScreenshot && (
+          <AnalyticsLightboxModal
+            screenshot={selectedScreenshot}
+            onClose={() => setSelectedScreenshot(null)}
+            onUpdateScreenshot={handleUpdateScreenshot}
+          />
+        )}
 
-      <EditPortfolioModal
-        isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
-        profile={profile}
-        videos={videos}
-        onSaveProfile={(newProf) => {
-          setProfile(newProf);
-          try {
-            localStorage.setItem('funmi_creator_profile', JSON.stringify(newProf));
-          } catch {
-            // ignore
-          }
-        }}
-        onUpdateVideo={handleUpdateVideo}
-      />
-
+        {isEditModalOpen && (
+          <EditPortfolioModal
+            isOpen={isEditModalOpen}
+            onClose={() => setIsEditModalOpen(false)}
+            profile={profile}
+            videos={videos}
+            onSaveProfile={(newProf) => {
+              setProfile(newProf);
+              try {
+                localStorage.setItem('funmi_creator_profile', JSON.stringify(newProf));
+              } catch {
+                // ignore
+              }
+            }}
+            onUpdateVideo={handleUpdateVideo}
+          />
+        )}
+      </Suspense>
     </div>
   );
 }
