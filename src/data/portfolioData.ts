@@ -8,6 +8,7 @@ export const INITIAL_PROFILE: CreatorProfile = {
   email: "oluwafunmiodusanya@gmail.com",
   phone: "+2349040487367",
   portraitUrl: "/src/assets/images/regenerated_image_1785444358154.png",
+  aboutPortraitUrl: "/src/assets/images/regenerated_image_1786457541345.png",
   instagramHandle: "@creator_funmi",
   instagramUrl: "https://www.instagram.com/creator_funmi?igsh=MWFteDFwZjhoYmJ3ZA%3D%3D&utm_source=qr",
   tiktokHandle: "@creator_funmi",
@@ -24,8 +25,8 @@ export const INITIAL_VIDEOS: VideoItem[] = [
     description: "Authentic everyday moments, morning skincare, and Lagos urban lifestyle routine.",
     videoUrl: "https://www.instagram.com/reel/DSk--bmDYeq/?igsh=MW95dW0wNDdra3ljcw==",
     thumbnailUrl: "/src/assets/images/regenerated_image_1786106702178.jpg",
-    views: "1.2K",
-    likes: "3K",
+    views: "1.2M",
+    likes: "37K",
     comments: "8",
     shares: "1",
     duration: "0:58"
@@ -193,7 +194,7 @@ export const INITIAL_ANALYTICS_SCREENSHOTS: AnalyticsScreenshot[] = [
     key: "views",
     title: "Views Performance",
     description: "Total impressions and video plays across Instagram Reels & TikTok.",
-    imageUrl: "",
+    imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",
     dateRange: "Last 30 Days"
   },
   {
@@ -201,7 +202,7 @@ export const INITIAL_ANALYTICS_SCREENSHOTS: AnalyticsScreenshot[] = [
     key: "engagement",
     title: "Engagement Breakdown",
     description: "Likes, comments, shares, and saves metrics demonstrating active community interest.",
-    imageUrl: "",
+    imageUrl: "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=1200&q=80",
     dateRange: "Last 30 Days"
   },
   {
@@ -209,7 +210,7 @@ export const INITIAL_ANALYTICS_SCREENSHOTS: AnalyticsScreenshot[] = [
     key: "followers",
     title: "Followers Growth",
     description: "Consistent follower accumulation driven by relatable comedy skits.",
-    imageUrl: "",
+    imageUrl: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1200&q=80",
     dateRange: "Last 30 Days"
   },
   {
@@ -217,7 +218,7 @@ export const INITIAL_ANALYTICS_SCREENSHOTS: AnalyticsScreenshot[] = [
     key: "audience",
     title: "Audience Demographics",
     description: "Age breakdown, top countries (Nigeria, UK, US) and gender split.",
-    imageUrl: "",
+    imageUrl: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
     dateRange: "Last 30 Days"
   }
 ];

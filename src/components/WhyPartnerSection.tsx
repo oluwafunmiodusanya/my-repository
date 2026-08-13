@@ -62,7 +62,7 @@ export const WhyPartnerSection: React.FC<WhyPartnerProps> = ({ benefits }) => {
               Pillar 0{activeSlide + 1} of 0{benefits.length}
             </span>
             <span className="text-xs text-[#2D2442]/60 font-medium hidden sm:inline-block">
-              Navigate using side arrows or pillar tags below
+              Navigate using side arrows
             </span>
           </div>
 
@@ -137,23 +137,7 @@ export const WhyPartnerSection: React.FC<WhyPartnerProps> = ({ benefits }) => {
             </AnimatePresence>
           </div>
 
-          {/* Carousel Dots / Thumbnail Selector */}
-          <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-            {benefits.map((benefit, idx) => (
-              <button
-                key={benefit.id}
-                onClick={() => setActiveSlide(idx)}
-                className={`px-4 py-2.5 rounded-2xl border text-xs font-bold transition-all flex items-center gap-2 shadow-sm ${
-                  activeSlide === idx
-                    ? 'bg-[#8F5BFF] text-white border-[#8F5BFF] ring-2 ring-[#8F5BFF]/30 scale-105'
-                    : 'bg-white text-[#2D2442]/80 border-purple-100 hover:border-purple-300 hover:bg-purple-50'
-                }`}
-              >
-                <span className={`w-2 h-2 rounded-full ${activeSlide === idx ? 'bg-white' : 'bg-[#8F5BFF]'}`} />
-                <span>0{idx + 1}. {benefit.title}</span>
-              </button>
-            ))}
-          </div>
+
 
         </div>
 

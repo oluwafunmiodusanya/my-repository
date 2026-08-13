@@ -26,7 +26,7 @@ export const AboutSection: React.FC<AboutProps> = ({ profile }) => {
             <div className="relative rounded-[2.5rem] overflow-hidden bg-white border border-purple-100 p-3 shadow-xl shadow-purple-900/5 group max-w-md mx-auto lg:max-w-none">
               <div className="aspect-[4/5] w-full rounded-[2rem] overflow-hidden bg-purple-50 relative">
                 <img
-                  src={profile.portraitUrl}
+                  src={profile.aboutPortraitUrl || profile.portraitUrl}
                   alt={profile.name}
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"

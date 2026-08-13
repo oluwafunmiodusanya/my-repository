@@ -23,7 +23,22 @@ import {
 import { CreatorProfile, VideoItem, AnalyticsScreenshot, ServiceItem } from './types';
 
 export default function App() {
-  const [profile, setProfile] = useState<CreatorProfile>(INITIAL_PROFILE);
+  const [profile, setProfile] = useState<CreatorProfile>(() => {
+    try {
+      const saved = localStorage.getItem('funmi_creator_profile');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return {
+          ...INITIAL_PROFILE,
+          ...parsed,
+          aboutPortraitUrl: (!parsed.aboutPortraitUrl || parsed.aboutPortraitUrl === "/src/assets/images/regenerated_image_1786106721139.jpg") ? INITIAL_PROFILE.aboutPortraitUrl : parsed.aboutPortraitUrl,
+        };
+      }
+    } catch {
+      // ignore
+    }
+    return INITIAL_PROFILE;
+  });
   const [videos, setVideos] = useState<VideoItem[]>(INITIAL_VIDEOS);
   const [metrics] = useState(INITIAL_METRICS);
   const [screenshots, setScreenshots] = useState<AnalyticsScreenshot[]>(() => {
@@ -31,7 +46,12 @@ export default function App() {
       const saved = localStorage.getItem('funmi_analytics_screenshots');
       if (saved) {
         const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed.map((item: AnalyticsScreenshot, index: number) => ({
+            ...item,
+            imageUrl: item.imageUrl || INITIAL_ANALYTICS_SCREENSHOTS[index]?.imageUrl || INITIAL_ANALYTICS_SCREENSHOTS[0].imageUrl
+          }));
+        }
       }
     } catch {
       // ignore
@@ -156,7 +176,14 @@ export default function App() {
         onClose={() => setIsEditModalOpen(false)}
         profile={profile}
         videos={videos}
-        onSaveProfile={(newProf) => setProfile(newProf)}
+        onSaveProfile={(newProf) => {
+          setProfile(newProf);
+          try {
+            localStorage.setItem('funmi_creator_profile', JSON.stringify(newProf));
+          } catch {
+            // ignore
+          }
+        }}
         onUpdateVideo={handleUpdateVideo}
       />
 

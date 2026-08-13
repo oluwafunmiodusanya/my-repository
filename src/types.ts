@@ -60,6 +60,7 @@ export interface CreatorProfile {
   email: string;
   phone: string;
   portraitUrl: string;
+  aboutPortraitUrl?: string;
   instagramHandle: string;
   instagramUrl: string;
   tiktokHandle: string;

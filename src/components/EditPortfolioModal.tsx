@@ -36,7 +36,19 @@ export const EditPortfolioModal: React.FC<EditModalProps> = ({
       const reader = new FileReader();
       reader.onload = (evt) => {
         if (evt.target?.result) {
-          setFormData({ ...formData, portraitUrl: evt.target.result as string });
+          setFormData((prev) => ({ ...prev, portraitUrl: evt.target.result as string }));
+        }
+      };
+      reader.readAsDataURL(e.target.files[0]);
+    }
+  };
+
+  const handleAboutPortraitUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files?.[0]) {
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        if (evt.target?.result) {
+          setFormData((prev) => ({ ...prev, aboutPortraitUrl: evt.target.result as string }));
         }
       };
       reader.readAsDataURL(e.target.files[0]);
@@ -186,28 +198,56 @@ export const EditPortfolioModal: React.FC<EditModalProps> = ({
                 </div>
               </div>
 
-              <div>
-                <label className="block text-slate-300 font-semibold mb-1">Hero Portrait Image</label>
-                <div className="flex items-center gap-4 p-3 rounded-xl bg-slate-900 border border-white/10">
-                  <img
-                    src={formData.portraitUrl}
-                    alt="Preview"
-                    referrerPolicy="no-referrer"
-                    className="w-12 h-16 object-cover rounded-lg"
-                  />
-                  <div className="space-y-2 flex-1">
-                    <input
-                      type="text"
-                      value={formData.portraitUrl}
-                      onChange={(e) => setFormData({ ...formData, portraitUrl: e.target.value })}
-                      className="w-full p-2 rounded-lg bg-black text-white text-xs border border-white/10"
-                      placeholder="Image URL"
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-slate-300 font-semibold mb-1">Hero Section Portrait Image</label>
+                  <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-900 border border-white/10">
+                    <img
+                      src={formData.portraitUrl}
+                      alt="Hero Preview"
+                      referrerPolicy="no-referrer"
+                      className="w-12 h-16 object-cover rounded-lg shrink-0"
                     />
-                    <label className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#8F5BFF] text-white text-xs font-semibold cursor-pointer">
-                      <Upload className="w-3.5 h-3.5" />
-                      <span>Upload New Image</span>
-                      <input type="file" accept="image/*" className="hidden" onChange={handlePortraitUpload} />
-                    </label>
+                    <div className="space-y-2 flex-1 min-w-0">
+                      <input
+                        type="text"
+                        value={formData.portraitUrl}
+                        onChange={(e) => setFormData({ ...formData, portraitUrl: e.target.value })}
+                        className="w-full p-2 rounded-lg bg-black text-white text-xs border border-white/10 truncate"
+                        placeholder="Hero Image URL"
+                      />
+                      <label className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#8F5BFF] text-white text-xs font-semibold cursor-pointer">
+                        <Upload className="w-3.5 h-3.5" />
+                        <span>Upload Hero Image</span>
+                        <input type="file" accept="image/*" className="hidden" onChange={handlePortraitUpload} />
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-slate-300 font-semibold mb-1">About Section Portrait Image</label>
+                  <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-900 border border-white/10">
+                    <img
+                      src={formData.aboutPortraitUrl || formData.portraitUrl}
+                      alt="About Preview"
+                      referrerPolicy="no-referrer"
+                      className="w-12 h-16 object-cover rounded-lg shrink-0"
+                    />
+                    <div className="space-y-2 flex-1 min-w-0">
+                      <input
+                        type="text"
+                        value={formData.aboutPortraitUrl || ''}
+                        onChange={(e) => setFormData({ ...formData, aboutPortraitUrl: e.target.value })}
+                        className="w-full p-2 rounded-lg bg-black text-white text-xs border border-white/10 truncate"
+                        placeholder="About Image URL"
+                      />
+                      <label className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-[#8F5BFF] text-white text-xs font-semibold cursor-pointer">
+                        <Upload className="w-3.5 h-3.5" />
+                        <span>Upload About Image</span>
+                        <input type="file" accept="image/*" className="hidden" onChange={handleAboutPortraitUpload} />
+                      </label>
+                    </div>
                   </div>
                 </div>
               </div>
