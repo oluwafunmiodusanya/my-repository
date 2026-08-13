@@ -34,9 +34,6 @@ const Footer = lazy(() =>
 const VideoModal = lazy(() =>
   import('./components/VideoModal').then((m) => ({ default: m.VideoModal }))
 );
-const AnalyticsLightboxModal = lazy(() =>
-  import('./components/AnalyticsLightboxModal').then((m) => ({ default: m.AnalyticsLightboxModal }))
-);
 const EditPortfolioModal = lazy(() =>
   import('./components/EditPortfolioModal').then((m) => ({ default: m.EditPortfolioModal }))
 );
@@ -112,33 +109,17 @@ export default function App() {
   const [profile, setProfile] = useState<CreatorProfile>(readStoredProfile);
   const [videos, setVideos] = useState<VideoItem[]>(INITIAL_VIDEOS);
   const [metrics] = useState(INITIAL_METRICS);
-  const [screenshots, setScreenshots] = useState<AnalyticsScreenshot[]>(readStoredScreenshots);
+  const [screenshots] = useState<AnalyticsScreenshot[]>(readStoredScreenshots);
   const [benefits] = useState(WHY_PARTNER_BENEFITS);
   const [services] = useState(SERVICES);
 
   const [selectedVideo, setSelectedVideo] = useState<VideoItem | null>(null);
-  const [selectedScreenshot, setSelectedScreenshot] = useState<AnalyticsScreenshot | null>(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const handleNavigate = (sectionId: string) => {
     const el = document.getElementById(sectionId);
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
-  const handleUpdateScreenshot = (id: string, newImageUrl: string) => {
-    setScreenshots((prev) => {
-      const updated = prev.map((scr) => (scr.id === id ? { ...scr, imageUrl: newImageUrl } : scr));
-      try {
-        localStorage.setItem('funmi_analytics_screenshots', JSON.stringify(updated));
-      } catch {
-        // ignore storage quota errors
-      }
-      return updated;
-    });
-    if (selectedScreenshot && selectedScreenshot.id === id) {
-      setSelectedScreenshot((prev) => (prev ? { ...prev, imageUrl: newImageUrl } : null));
     }
   };
 
@@ -174,8 +155,6 @@ export default function App() {
         <AnalyticsSection
           metrics={metrics}
           screenshots={screenshots}
-          onUpdateScreenshot={handleUpdateScreenshot}
-          onOpenLightbox={(screenshot) => setSelectedScreenshot(screenshot)}
         />
 
         <WhyPartnerSection benefits={benefits} />
@@ -195,14 +174,6 @@ export default function App() {
             video={selectedVideo}
             onClose={() => setSelectedVideo(null)}
             onUpdateVideo={handleUpdateVideo}
-          />
-        )}
-
-        {selectedScreenshot && (
-          <AnalyticsLightboxModal
-            screenshot={selectedScreenshot}
-            onClose={() => setSelectedScreenshot(null)}
-            onUpdateScreenshot={handleUpdateScreenshot}
           />
         )}
 

@@ -7,13 +7,10 @@ import { analyticsImageProps } from '../utils/responsiveImage';
 interface AnalyticsSectionProps {
   metrics: AnalyticsMetric[];
   screenshots: AnalyticsScreenshot[];
-  onUpdateScreenshot: (id: string, newImageUrl: string) => void;
-  onOpenLightbox: (screenshot: AnalyticsScreenshot) => void;
 }
 
 export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
   screenshots,
-  onOpenLightbox,
 }) => {
   const [activeSlide, setActiveSlide] = useState(0);
 
@@ -151,8 +148,7 @@ export const AnalyticsSection: React.FC<AnalyticsSectionProps> = ({
                         loading="lazy"
                         decoding="async"
                         referrerPolicy="no-referrer"
-                        onClick={() => onOpenLightbox(scr)}
-                        className="w-full h-full object-contain cursor-zoom-in"
+                        className="w-full h-full object-contain"
                       />
 
                       {/* Side Overlay Arrow Buttons */}
